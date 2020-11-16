@@ -1,2 +1,1 @@
-# davidpennington.me
-personal website
+https://davidpennington.me
