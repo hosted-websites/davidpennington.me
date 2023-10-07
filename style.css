@@ -1,0 +1,58 @@
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    line-height: 1.4em;
+    color: #000;
+    background: #fff9ee;
+  }
+  
+  body.dark {
+    color: #f2f2f2;
+    background: #333;
+  }
+  
+  .dark a,
+  .dark pre span {
+    color: #07caca;
+  }
+  .dark a:hover {
+    color: orange;
+  }
+  
+  header div {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  div {
+    margin: 0 auto;
+    max-width: 40em;
+  }
+  
+  main {
+    max-width: 40em;
+    margin: auto;
+  }
+  
+  blockquote {
+    padding: 1em;
+    background: #e2e2e2;
+    border-radius: 1em;
+    color: #383838;
+  }
+  
+  .dark blockquote,
+  .dark pre {
+    padding: 1em;
+    background: #444;
+    border-radius: 1em;
+    color: inherit;
+  }
+  
+  pre span {
+    color: green;
+  }
+  
+  pre i {
+    color: #aaa;
+  }
+  

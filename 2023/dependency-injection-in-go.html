@@ -1,0 +1,151 @@
+<script src="/jr.js"></script>
+<pre>
+
+# Guide to Dependency Injection in Go
+
+Dependency Injection (DI) is a software design principle that encourages the separation of concerns in your code by decoupling the components that rely on each other. It is a crucial concept in software development, as it promotes modularity, testability, and maintainability. In this guide, we will explore why using Dependency Injection is a good practice in Go and provide code samples using interfaces to illustrate the concepts.
+
+## Table of Contents
+1. What is Dependency Injection?
+2. Why Use Dependency Injection in Go?
+3. Code Examples in Go
+   a. Constructor Injection
+   b. Interface Injection
+   c. Using a DI Container
+4. Benefits of Dependency Injection
+5. Best Practices
+6. Conclusion
+
+## 1. What is Dependency Injection?
+
+Dependency Injection is a design pattern that allows you to inject the dependencies of a component (e.g., objects, services, or functions) from external sources rather than creating them internally. This makes your code more flexible, maintainable, and testable, as it separates concerns and promotes loose coupling between components.
+
+In Go, dependency injection is often implemented using interfaces and constructor functions, but other techniques such as method injection or service locators are also applicable.
+
+## 2. Why Use Dependency Injection in Go?
+
+### 2.1. Modularity and Separation of Concerns
+By injecting dependencies, you can break your application into smaller, manageable components that focus on specific tasks. Each component has well-defined responsibilities, which promotes modularity and makes your codebase easier to understand and maintain.
+
+### 2.2. Testability
+Dependency injection enables easy testing. You can provide mock or fake dependencies during testing, ensuring that your tests are isolated and repeatable. This helps identify and fix issues early in the development process.
+
+### 2.3. Flexibility
+With DI, you can change the behavior of a component by simply injecting a different dependency. This allows you to adapt to changing requirements or use different implementations without modifying the core logic of your application.
+
+### 2.4. Reusability
+By separating dependencies from the components that use them, you can reuse those dependencies across different parts of your application or even in entirely different projects.
+
+## 3. Code Examples in Go
+
+### 3.1. Constructor Injection
+
+```go
+package main
+
+import "fmt"
+
+// Database interface representing a data store
+type Database interface {
+    Connect() error
+    Query(query string) ([]byte, error)
+}
+
+// MySQLDatabase implements the Database interface
+type MySQLDatabase struct {
+    // Database configuration here
+}
+
+func (db *MySQLDatabase) Connect() error {
+    // Implementation of connection logic
+    return nil
+}
+
+func (db *MySQLDatabase) Query(query string) ([]byte, error) {
+    // Implementation of query execution
+    return nil, nil
+}
+
+// Service that depends on a Database
+type DataService struct {
+    DB Database
+}
+
+// NewDataService is a constructor function that injects a Database
+func NewDataService(db Database) *DataService {
+    return &DataService{DB: db}
+}
+
+func main() {
+    db := &MySQLDatabase{}
+    dataService := NewDataService(db)
+
+    // Use dataService...
+}
+```
+
+In this example, `DataService` depends on a `Database` interface. The `NewDataService` constructor function injects a specific implementation of the `Database` interface, allowing you to easily switch database implementations.
+
+### 3.2. Interface Injection
+
+```go
+package main
+
+import "fmt"
+
+// Printer defines an interface for printing messages
+type Printer interface {
+    Print(message string)
+}
+
+// ConsolePrinter implements the Printer interface
+type ConsolePrinter struct{}
+
+func (cp *ConsolePrinter) Print(message string) {
+    fmt.Println(message)
+}
+
+// Greeter depends on the Printer interface
+type Greeter struct {
+    Printer Printer
+}
+
+// NewGreeter is a constructor function that injects a Printer
+func NewGreeter(p Printer) *Greeter {
+    return &Greeter{Printer: p}
+}
+
+func main() {
+    printer := &ConsolePrinter{}
+    greeter := NewGreeter(printer)
+
+    greeter.Printer.Print("Hello, Dependency Injection!")
+}
+```
+
+In this example, the `Greeter` struct depends on the `Printer` interface. You can inject different implementations of `Printer`, such as `ConsolePrinter`, to change how messages are printed.
+
+### 3.3. Using a DI Container
+
+In more complex applications, you can use a Dependency Injection container to manage and resolve dependencies automatically. Popular DI containers for Go include [Google Wire](https://github.com/google/wire) and [DI](https://github.com/sarulabs/di).
+
+## 4. Benefits of Dependency Injection
+
+- **Testability**: Easier unit testing with mock or fake dependencies.
+- **Maintainability**: Components are loosely coupled, making it easier to maintain and extend the codebase.
+- **Flexibility**: Swap out implementations of dependencies without changing the core logic.
+- **Modularity**: Encourage good code organization and separation of concerns.
+- **Reusability**: Reuse components and dependencies in different parts of the application.
+
+## 5. Best Practices
+
+- Prefer interfaces over concrete types for dependencies.
+- Use constructor functions to create instances with injected dependencies.
+- Keep your components small and focused on a single responsibility.
+- Avoid overusing DI containers; use them judiciously for larger projects.
+
+## 6. Conclusion
+
+Dependency Injection is a valuable practice in Go and other programming languages that promotes modularity, testability, and maintainability in your code. By following the principles outlined in this guide and using interfaces to define dependencies, you can create more flexible and robust software systems. Remember to keep your components small, focused, and well-organized to fully harness the benefits of Dependency Injection in Go.
+
+> _Note: I was tired of lorem ipsum so I asked ChatGPT to write this. It's not half bad._
