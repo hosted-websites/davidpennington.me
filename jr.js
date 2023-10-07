@@ -192,6 +192,12 @@ function gist(path) {
  * Get this party started!
  */
 function run() {
+
+	var meta = document.createElement('meta');
+	meta.setAttribute('name', 'viewport');
+	meta.setAttribute('content', 'width=device-width, initial-scale=1');
+	document.head.appendChild(meta);
+
 	var body = document.getElementsByTagName("body")[0];
 
 	// Attach an ID (based on URL) to the body container for CSS control
